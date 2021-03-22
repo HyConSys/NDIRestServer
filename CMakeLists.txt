@@ -36,6 +36,5 @@ set_target_properties(NDIRestServer
 
 #if windows, copy the DLL to output
 if (WIN32)
-    message(WARNING "kokoo ................. ${OUT_DIR}")
     file(COPY ${NDI_BIN_DIR}/Processing.NDI.Lib.x64.dll DESTINATION ${OUT_DIR}/)
 endif()

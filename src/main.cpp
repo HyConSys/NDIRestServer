@@ -1,14 +1,3 @@
-// only for windows
-#ifdef _WIN32
-	#include <windows.h>
-	#define strncasecmp _strnicmp
-	#ifdef _WIN64
-		#pragma comment(lib, "Processing.NDI.Lib.x64.lib")
-	#else
-		#pragma comment(lib, "Processing.NDI.Lib.x86.lib")
-	#endif
-#endif
-
 // Some needed libs
 #include <csignal>
 #include <cstddef>
@@ -38,26 +27,44 @@ int main(int argc, char* argv[])
     signal(SIGINT, sigint_handler);
 
 	// Lets load the file from disk
-	std::vector<unsigned char> png_data;
-	loadFile(png_data, "../data/image.png");
-	if (png_data.empty()) {
-		printf("PNG Data Empty.\n");
+	std::vector<unsigned char> png1_data;
+	std::vector<unsigned char> png2_data;
+	loadFile(png1_data, "../data/image1.png");
+	if (png1_data.empty()) {
+		printf("PNG 1 Data Empty.\n");
+		return 0;
+	}
+	loadFile(png2_data, "../data/image2.png");
+	if (png2_data.empty()) {
+		printf("PNG 2 Data Empty.\n");
 		return 0;
 	}
 	
 	// Decode the PNG file
-	std::vector<unsigned char> image_data;
-	unsigned long xres = 0, yres = 0;
-	if (decodePNG(image_data, xres, yres, &png_data[0], png_data.size(), true)) {
+	std::vector<unsigned char> image1_data;
+	std::vector<unsigned char> image2_data;
+	unsigned long xres1 = 0, yres1 = 0;
+	unsigned long xres2 = 0, yres2 = 0;
+	if (decodePNG(image1_data, xres1, yres1, &png1_data[0], png1_data.size(), true)) {
 		printf("Failed to decode the image.\n");
 		return 0;
 	}
+	if (decodePNG(image2_data, xres2, yres2, &png2_data[0], png2_data.size(), true)) {
+		printf("Failed to decode the image.\n");
+		return 0;
+	}	
 
 	// create a sender and start sending
 	NDIImageSender myNDISender(NDSI_SENDER_NAME, 10);
-	myNDISender.setImage(image_data, xres, yres);
+	
 			
-	while(!exit_program);
+	while(!exit_program){
+		myNDISender.setImage(image1_data, xres2, yres2);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+		myNDISender.setImage(image2_data, xres2, yres2);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
 	printf("Exiting ...\n");
 
 	// Success
