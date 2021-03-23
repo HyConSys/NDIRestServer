@@ -8,8 +8,7 @@ import time
 def getImageDataAndResolution(imageFile):
     img = cv2.imread(imageFile, cv2.IMREAD_UNCHANGED)
     xres, yres, c = img.shape
-    image_bytes = bytes(img.reshape(-1).tolist())
-    return [image_bytes, xres, yres]
+    return [bytes(img), xres, yres]
 
 def LoadNDIRestServerLib():
     OS = platform.system()
