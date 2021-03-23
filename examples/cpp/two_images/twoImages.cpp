@@ -24,7 +24,7 @@ extern "C" DLLIMPORT void NDIImageSender_setImage(NDIImageSender* instance, cons
 static std::atomic<bool> exit_program(false);
 static void sigint_handler(int){exit_program = true;}
 
-#define NDSI_SENDER_NAME "My_PNG"
+#define NDI_SENDER_NAME "My_PNG"
 int main(int argc, char* argv[])
 {	
 	// Catch interrupt so that we can shut down gracefully
@@ -33,12 +33,12 @@ int main(int argc, char* argv[])
 	// Lets load the file from disk
 	std::vector<unsigned char> png1_data;
 	std::vector<unsigned char> png2_data;
-	loadFile(png1_data, "../data/image1.png");
+	loadFile(png1_data, "images/image1.png");
 	if (png1_data.empty()) {
 		std::cout << "PNG 1 Data Empty." << std::endl;
 		return 0;
 	}
-	loadFile(png2_data, "../data/image2.png");
+	loadFile(png2_data, "images/image2.png");
 	if (png2_data.empty()) {
 		std::cout << "PNG 2 Data Empty." << std::endl;
 		return 0;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 	}	
 
 	// create a sender and start sending
-	NDIImageSender* pNDISender = NDIImageSender_create(NDSI_SENDER_NAME, 10);
+	NDIImageSender* pNDISender = NDIImageSender_create(NDI_SENDER_NAME, 10);
 	
 	// keep pushing different images
 	while(!exit_program){
