@@ -1,14 +1,6 @@
 // Some needed libs
 #include <csignal>
-#include <cstddef>
-#include <cstring>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <atomic>
-#include <stdlib.h>
-#include <chrono>
-#include <thread>
+#include <iostream>
 
 // The NDI Sender Interface
 #include "NDIImageSender.h"
@@ -31,12 +23,12 @@ int main(int argc, char* argv[])
 	std::vector<unsigned char> png2_data;
 	loadFile(png1_data, "../data/image1.png");
 	if (png1_data.empty()) {
-		printf("PNG 1 Data Empty.\n");
+		std::cout << "PNG 1 Data Empty." << std::endl;
 		return 0;
 	}
 	loadFile(png2_data, "../data/image2.png");
 	if (png2_data.empty()) {
-		printf("PNG 2 Data Empty.\n");
+		std::cout << "PNG 2 Data Empty." << std::endl;
 		return 0;
 	}
 	
@@ -57,7 +49,7 @@ int main(int argc, char* argv[])
 	// create a sender and start sending
 	NDIImageSender myNDISender(NDSI_SENDER_NAME, 10);
 	
-			
+	// keep pushing different images
 	while(!exit_program){
 		myNDISender.setImage(image1_data, xres2, yres2);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -65,7 +57,7 @@ int main(int argc, char* argv[])
 		myNDISender.setImage(image2_data, xres2, yres2);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
-	printf("Exiting ...\n");
+	std::cout << "Exiting ..." << std::endl << std::flush;
 
 	// Success
 	return 0;

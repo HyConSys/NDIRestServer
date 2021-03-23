@@ -5,9 +5,8 @@
 
 2-$ mkdir build; cmake ..; cmake --build .;
 
-3- Copy the data/image.png to build/
+3- Binaries copied to ./bin. Run the program
 
-4- Run the program
-
-5- To receive/test the stream download the NDI tools andd install the NDI-Video-Monitor tool:
-    - For Mac, use the [link](https://downloads.ndi.tv/Tools/NewTekNDIToolsForMacOS.dmg): 
+4- To receive/test the stream download the NDI tools andd install the NDI-Video-Monitor (a.k.a Studio Monitor) tool:
+    - For Mac, use the [link](https://downloads.ndi.tv/Tools/NewTekNDIToolsForMacOS.dmg). 
+    - For windows, use the [link](https://downloads.ndi.tv/Tools/NDI%204%20Tools.exe)

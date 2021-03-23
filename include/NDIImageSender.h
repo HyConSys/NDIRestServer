@@ -34,5 +34,6 @@ public:
     NDIImageSender(const std::string& l_senderName, size_t l_sendPeriodMs);
     ~NDIImageSender();
 
+    // expected image buffer: RGBA 32-bit (8 bit per channel) color format 
     void setImage(const std::vector<unsigned char>& l_imageData, int xres, int yres);
 };

@@ -8,7 +8,7 @@ void image_sender(NDIImageSender* thisSender){
 
     while(true){
         
-        while (thisSender->lockAccessToLocalData.test_and_set(std::memory_order_acquire))
+        while (thisSender->lockAccessToLocalData.test_and_set(std::memory_order_acquire));
         // should i update the image ?
         if(thisSender->hasImageChanged){
             NDIVideoFrame.xres = thisSender->imageXres;
@@ -27,7 +27,7 @@ void image_sender(NDIImageSender* thisSender){
         std::this_thread::sleep_for(std::chrono::milliseconds(thisSender->sendPeriodMs));
 
         // should i exit ?
-        while (thisSender->lockAccessToLocalData.test_and_set(std::memory_order_acquire))
+        while (thisSender->lockAccessToLocalData.test_and_set(std::memory_order_acquire));
         if(thisSender->needsToExit){
             thisSender->lockAccessToLocalData.clear(std::memory_order_release);
             break;    
@@ -61,7 +61,7 @@ NDIImageSender::~NDIImageSender(){
 
     
     // lock
-    while (lockAccessToLocalData.test_and_set(std::memory_order_acquire))
+    while (lockAccessToLocalData.test_and_set(std::memory_order_acquire));
 
     // request end the sender thread
     needsToExit = true;
@@ -81,10 +81,13 @@ NDIImageSender::~NDIImageSender(){
 void NDIImageSender::setImage(const std::vector<unsigned char>& l_imageData, int xres, int yres){
 
     // check passed image size based on x,y-res !
+    size_t expectedSizeBytes = xres * yres * 4;
+    if(l_imageData.size() != expectedSizeBytes)
+        throw std::runtime_error("NDIImageSender::setImage: Invalid image size.");
 
 
     // lock
-    while (lockAccessToLocalData.test_and_set(std::memory_order_acquire))
+    while (lockAccessToLocalData.test_and_set(std::memory_order_acquire));
 
     // copy image contents/info
     imageData.resize(l_imageData.size());
