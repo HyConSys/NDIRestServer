@@ -2,15 +2,27 @@
 #include <csignal>
 #include <iostream>
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    #define DLLIMPORT __declspec(dllimport)
+#else
+    #define DLLIMPORT
+#endif
+
 // The NDI Sender Interface
 #include "NDIImageSender.h"
 
 // PNG loader in a single file from http://lodev.org/lodepng/ 
 #include "picopng.hpp"
 
+
+// DLL Imports
+extern "C" DLLIMPORT NDIImageSender* NDIImageSender_create(const char* l_senderName, size_t l_sendPeriodMs);
+extern "C" DLLIMPORT void NDIImageSender_delete(NDIImageSender* instance);
+extern "C" DLLIMPORT void NDIImageSender_setImage(NDIImageSender* instance, const std::vector<unsigned char>& l_imageData, int xres, int yres);
+
+
 static std::atomic<bool> exit_program(false);
 static void sigint_handler(int){exit_program = true;}
-
 
 #define NDSI_SENDER_NAME "My_PNG"
 int main(int argc, char* argv[])
@@ -47,17 +59,18 @@ int main(int argc, char* argv[])
 	}	
 
 	// create a sender and start sending
-	NDIImageSender myNDISender(NDSI_SENDER_NAME, 10);
+	NDIImageSender* pNDISender = NDIImageSender_create(NDSI_SENDER_NAME, 10);
 	
 	// keep pushing different images
 	while(!exit_program){
-		myNDISender.setImage(image1_data, xres2, yres2);
+		NDIImageSender_setImage(pNDISender, image1_data, xres2, yres2);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-		myNDISender.setImage(image2_data, xres2, yres2);
+		NDIImageSender_setImage(pNDISender, image2_data, xres2, yres2);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	std::cout << "Exiting ..." << std::endl << std::flush;
+	NDIImageSender_delete(pNDISender);
 
 	// Success
 	return 0;

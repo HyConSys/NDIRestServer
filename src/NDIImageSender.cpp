@@ -1,6 +1,12 @@
 #include "NDIImageSender.h"
 
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    #define DLLEXPORT __declspec(dllexport)
+#else
+    #define DLLEXPORT
+#endif
+
 void image_sender(NDIImageSender* thisSender){
     
     // a video frame to contain the iamge
@@ -101,4 +107,14 @@ void NDIImageSender::setImage(const std::vector<unsigned char>& l_imageData, int
 
     // unlock
     lockAccessToLocalData.clear(std::memory_order_release);
+}
+
+extern "C" DLLEXPORT NDIImageSender* NDIImageSender_create(const char* l_senderName, size_t l_sendPeriodMs){
+    return new NDIImageSender(l_senderName, l_sendPeriodMs);
+}
+extern "C" DLLEXPORT void NDIImageSender_delete(NDIImageSender* instance){
+    delete instance;
+}
+extern "C" DLLEXPORT void NDIImageSender_setImage(NDIImageSender* instance, const std::vector<unsigned char>& l_imageData, int xres, int yres){
+    instance->setImage(l_imageData, xres, yres);
 }
