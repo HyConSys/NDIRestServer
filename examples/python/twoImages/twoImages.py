@@ -14,6 +14,7 @@ def main_killer(signum, frame):
 
 def getImageDataAndResolution(imageFile):
     img = cv2.imread(imageFile, cv2.IMREAD_UNCHANGED)
+    img = img[:,:,[2,1,0,3]]    # this converts 4-channel BGR to 4-c RGB
     xres, yres, c = img.shape
     return [bytes(img), xres, yres]
 
