@@ -9,17 +9,11 @@
 #endif
 
 // The NDI Sender Interface
+#define NDIImageSender_DLL_IMPORTS
 #include "NDIImageSender.h"
 
 // PNG loader in a single file from http://lodev.org/lodepng/ 
 #include "picopng.hpp"
-
-
-// DLL Imports
-extern "C" DLLIMPORT NDIImageSender* NDIImageSender_create(const char* l_senderName, size_t l_sendPeriodMs);
-extern "C" DLLIMPORT void NDIImageSender_delete(NDIImageSender* instance);
-extern "C" DLLIMPORT void NDIImageSender_setImage(NDIImageSender* instance, const std::vector<unsigned char>& l_imageData, int xres, int yres);
-
 
 static std::atomic<bool> exit_program(false);
 static void sigint_handler(int){exit_program = true;}
@@ -63,10 +57,10 @@ int main(int argc, char* argv[])
 	
 	// keep pushing different images
 	while(!exit_program){
-		NDIImageSender_setImage(pNDISender, image1_data, xres2, yres2);
+		NDIImageSender_setImage(pNDISender, image1_data.data(), xres1, yres1);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-		NDIImageSender_setImage(pNDISender, image2_data, xres2, yres2);
+		NDIImageSender_setImage(pNDISender, image2_data.data(), xres2, yres2);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	std::cout << "Exiting ..." << std::endl << std::flush;

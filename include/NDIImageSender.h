@@ -37,3 +37,11 @@ public:
     // expected image buffer: RGBA 32-bit (8 bit per channel) color format 
     void setImage(const std::vector<unsigned char>& l_imageData, int xres, int yres);
 };
+
+
+// if requested, you get the DLL Imports
+#ifdef NDIImageSender_DLL_IMPORTS
+extern "C" DLLIMPORT NDIImageSender* NDIImageSender_create(const char* l_senderName, size_t l_sendPeriodMs);
+extern "C" DLLIMPORT void NDIImageSender_delete(NDIImageSender* instance);
+extern "C" DLLIMPORT void NDIImageSender_setImage(NDIImageSender* instance, const unsigned char* l_imageData, int xres, int yres);
+#endif
