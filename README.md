@@ -3,6 +3,8 @@
     - For iOS and macOS at this [link](https://downloads.ndi.tv/SDK/NDI_SDK_Mac/InstallNDISDK_v4_Apple.pkg).
     - For Linux at this [link](https://downloads.ndi.tv/SDK/NDI_SDK_Linux/InstallNDISDK_v4_Linux.tar.gz).
 
+    %NDI_SDK_DIR%\Bin\x64
+
 2-$ mkdir build; cd build; cmake ..; cmake --build .;
 
 3- Binaries copied to ./bin. Run the program
