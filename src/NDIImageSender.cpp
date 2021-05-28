@@ -111,13 +111,17 @@ void NDIImageSender::setImage(const std::vector<unsigned char>& l_imageData, int
 
 extern "C" DLLEXPORT NDIImageSender* NDIImageSender_create(const char* l_senderName, size_t l_sendPeriodMs){
     NDIImageSender* new_obj = new NDIImageSender(l_senderName, l_sendPeriodMs);    
+    //std::cout << "Created sender with this address " << new_obj << std::endl;
     return new_obj;
 }
 extern "C" DLLEXPORT void NDIImageSender_delete(NDIImageSender* instance){
     delete instance;
 }
 extern "C" DLLEXPORT void NDIImageSender_setImage(NDIImageSender* instance, const unsigned char* l_imageData, int xres, int yres){
+    //std::cout << "Someone asked me set image of a sender of this address " << instance << std::endl;    
     size_t num_bytes = xres*yres*4;
+    //std::cout << "data size: " << num_bytes << std::endl;
+    //std::cout << "first 3 data elements: " << l_imageData[0] << ", " << l_imageData[1] << ", " << l_imageData[0] << std::endl;
     std::vector<unsigned char> as_vec = std::vector<unsigned char>(l_imageData, l_imageData + num_bytes);
     instance->setImage(as_vec, xres, yres);
 }

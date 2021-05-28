@@ -115,7 +115,9 @@ class MyGame(arcade.Window):
         
         if self.draw_counter % 10 == 0:
             image_bytes = arcade.get_image().tobytes()
-            self.ndiImgSender.send_image(image_bytes, SCREEN_WIDTH*2, SCREEN_HEIGHT*2)
+            width = arcade.get_image().width
+            height = arcade.get_image().height
+            self.ndiImgSender.send_image(image_bytes, width, height)
 
         # This command has to happen before we start drawing
         arcade.start_render()

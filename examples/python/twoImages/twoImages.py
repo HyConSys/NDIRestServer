@@ -23,7 +23,7 @@ def LoadNDIRestServerLib():
     LIB_BIN_PATH = "../../../bin/"
 
     if OS == "Windows":
-        libFile = LIB_BIN_PATH + "libNDIRestServer.dll"
+        libFile = LIB_BIN_PATH + "NDIRestServer.dll"
     elif OS == "Linux":
         libFile = LIB_BIN_PATH + "libNDIRestServer.so"
     elif OS == "Darwin":

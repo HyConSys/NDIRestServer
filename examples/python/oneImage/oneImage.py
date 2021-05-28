@@ -4,6 +4,7 @@ import cv2
 import platform
 import ctypes
 import time
+import os
 
 
 KillMain = False
@@ -19,11 +20,12 @@ def getImageDataAndResolution(imageFile):
     return [bytes(img), xres, yres]
 
 def LoadNDIRestServerLib():
+    #os.add_dll_directory("C:\\Windows\\System32")
     OS = platform.system()
     LIB_BIN_PATH = "../../../bin/"
 
     if OS == "Windows":
-        libFile = LIB_BIN_PATH + "libNDIRestServer.dll"
+        libFile = LIB_BIN_PATH + "NDIRestServer.dll"
     elif OS == "Linux":
         libFile = LIB_BIN_PATH + "libNDIRestServer.so"
     elif OS == "Darwin":
